@@ -1,0 +1,72 @@
+#include <stdio.h>
+
+// Definindo constantes para facilitar futuras manutenções e escalabilidade
+#define NUM_BAIRROS 3
+#define NUM_DIAS 7
+
+int main() {
+    // Matriz bidimensional [Bairros][Dias] para armazenar o volume de chuva em mm
+    float chuvas[NUM_BAIRROS][NUM_DIAS];
+    
+    // Variáveis de controle para os laços de repetição
+    int b, d;
+
+    printf("=== SISTEMA DE MONITORAMENTO DE CHUVAS E HEATMAP ===\n");
+    printf("Bem-vindo! Vamos registrar e mapear os indices pluviometricos.\n\n");
+
+    // ==========================================
+    // 1. ETAPA DE ENTRADA DE DADOS (LEITURA)
+    // ==========================================
+    // O laço externo percorre cada bairro (linhas da matriz)
+    for (b = 0; b < NUM_BAIRROS; b++) {
+        printf("--- Cadastro para o Bairro %d ---\n", b + 1);
+        
+        // O laço interno percorre cada dia da semana para o bairro atual (colunas da matriz)
+        for (d = 0; d < NUM_DIAS; d++) {
+            printf("Digite a chuva do dia %d (em mm): ", d + 1);
+            scanf("%f", &chuvas[b][d]);
+        }
+        printf("\n");
+    }
+
+    // ==========================================
+    // 2. ETAPA DE PROCESSAMENTO E HEATMAP (BÔNUS)
+    // ==========================================
+    printf("================================================\n");
+    printf("         MAPA DE CALOR (HEATMAP) DE CHUVAS      \n");
+    printf("================================================\n");
+    printf("Legenda: [ ] Sem chuva | [-] Leve | [~] Moderado | [#] Forte\n\n");
+
+    // Imprime o cabeçalho dos dias no console
+    printf("Bairro/Dia |");
+    for (d = 0; d < NUM_DIAS; d++) {
+        printf(" D%d ", d + 1);
+    }
+    printf("\n------------------------------------------------\n");
+
+    // Percorre a matriz novamente para gerar a representação visual em formato de tabela
+    for (b = 0; b < NUM_BAIRROS; b++) {
+        printf("Bairro %d    |", b + 1);
+        
+        for (d = 0; d < NUM_DIAS; d++) {
+            float mm = chuvas[b][d];
+            
+            // Regras de negócio condicionais para definir a intensidade visual
+            if (mm == 0.0) {
+                printf(" [ ]"); // Sem chuva
+            } else if (mm < 10.0) {
+                printf(" [-]"); // Chuva leve
+            } else if (mm < 30.0) {
+                printf(" [~]"); // Chuva moderada
+            } else {
+                printf(" [#]"); // Chuva forte
+            }
+        }
+        printf("\n");
+    }
+    
+    printf("================================================\n");
+    printf("Processamento concluído com sucesso. Ate logo!\n");
+
+    return 0;
+}
